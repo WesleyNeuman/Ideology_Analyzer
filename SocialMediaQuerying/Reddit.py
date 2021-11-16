@@ -16,7 +16,6 @@ class Reddit(object):
         )
 
 
-    def get_first_controversial(self, name: str):
-        return self.rhandler.subreddit(name).hot(limit=1)
+
 
 
