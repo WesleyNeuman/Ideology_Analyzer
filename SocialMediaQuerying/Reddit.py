@@ -11,7 +11,12 @@ class Reddit(object):
             client_id=sec.reddit_client,
             client_secret=sec.reddit_secret,
             password=sec.reddit_pswd,
-            user_agent="WNAGENT",
+            user_agent="ideology",
             username=sec.reddit_user
         )
+
+
+    def get_first_controversial(self, name: str):
+        return self.rhandler.subreddit(name).hot(limit=1)
+
 
