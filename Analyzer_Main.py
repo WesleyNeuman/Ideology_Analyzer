@@ -5,15 +5,23 @@ import AWS.Logging as awslog
 import pprint
 
 # Import Internal Modules
-import SocialMediaQuerying.Reddit as Reddit
+from SocialMediaQuerying.Reddit import *
+
+# Testing code for getting a post from reddit
+reddit = Reddit()
+
+sublist = reddit.rhandler.subreddit('atheism').hot(limit=1)
+post_breakdown = []
+for post in sublist:
+    post_breakdown.append(Post(post=post))
+    comment_list = break_down_comment_tree(post)
+    for comment in comment_list:
+        post_breakdown.append(Comment(comment=comment))
+
+# Testing code for calling analysis
 
 
-reddit = Reddit.Reddit()
+# Testing code for logging analyzed data
 #logger = awslog.DynamoLogger()
 
-sublist = reddit.rhandler.subreddit('funny').hot(limit=1)
-comment_list = []
-for post in sublist:
-    comment_list = reddit.break_down_comment_tree(post)
 
-pprint.pprint(vars(comment_list[0]))
