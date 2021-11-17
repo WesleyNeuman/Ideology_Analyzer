@@ -16,6 +16,9 @@ class Reddit(object):
         )
 
 
-
+    def break_down_comment_tree(self, submission) -> list:
+        """Accepts an already acquired submission object and breaks it down into individual comments"""
+        submission.comments.replace_more(limit=None)
+        return submission.comments.list()
 
 
