@@ -1,7 +1,7 @@
 # Import External Modules
 import pandas as pd
 import PandasWrappers as pw
-import AWS.Logging as awslog
+import AWS.LoggingAWS as awslog
 import pprint
 
 # Import Internal Modules
