@@ -16,51 +16,63 @@ class Reddit(object):
         )
 
 
-class Content_Interface(object):
-
-    def __init__(self):
-        pass
-
-
-class Comment(Content_Interface):
-    """Content Implementation for a comment"""
+class Comment(object):
+    """Selects my desired content from a reddit comment"""
 
     def __init__(self, comment: praw.Reddit.comment):
-        self.subreddit = comment.subreddit.display_name
-        self.comment_id = comment.id
-        self.post_id = comment.link_id
-        self.parent_id = comment.parent_id
-        self.author = comment.author.name
-        self.depth = comment.depth
-        self.flair = comment.author_flair_text
-        self.text = comment.body
-        self.ups = comment.ups
-        self.downs = comment.downs
-        self.score = comment.score
+        self._id = 'r_' + str(comment.id)
+        self.subreddit = str(comment.subreddit.display_name)
+        self.comment_id = str(comment.id)
+        self.post_id = str(comment.link_id)
+        self.parent_id = str(comment.parent_id)
+        self.author = str(comment.author.name)
+        self.depth = str(comment.depth)
+        self.flair = str(comment.author_flair_text)
+        self.text = str(comment.body)
+        self.ups = str(comment.ups)
+        self.downs = str(comment.downs)
+        self.score = str(comment.score)
         self.title = ''
 
 
-class Post(Content_Interface):
-    """Content Implementation for a post"""
+class Post(object):
+    """Creates a post object by selecting data I want out of the reddit submission along with creating objects from each of the comments"""
 
     def __init__(self, post: praw.Reddit.submission):
-        self.subreddit = post.subreddit
-        self.comment_id = post.id
-        self.post_id = post.id
+        self._id = 'r_' + str(post.id)
+        self.subreddit = str(post.subreddit.display_name)
+        self.comment_id = str(post.id)
+        self.post_id = str(post.id)
         self.parent_id = 'toplevelpost'
-        self.author = post.author.name
-        self.depth = -1
-        self.flair = post.author_flair_text
-        self.text = post.selftext
-        self.ups = post.ups
-        self.downs = post.downs
-        self.score = post.score
-        self.title = post.title
+        self.author = str(post.author.name)
+        self.depth = '-1'
+        self.flair = str(post.author_flair_text)
+        self.text = str(post.selftext)
+        self.ups = str(post.ups)
+        self.downs = str(post.downs)
+        self.score = str(post.score)
+        self.title = str(post.title)
+        self.comment_list = process_comments(post)
+
+
+def process_comments(post):
+    """Creates list of comment objects from a post"""
+    comments = break_down_comment_tree(post)
+    comment_obj_list = []
+    for comment in comments:
+        if comment.author != None:
+            comment_obj_list.append(Comment(comment=comment))
+    return comment_obj_list
 
 
 def break_down_comment_tree(submission) -> list:
     """Accepts an already acquired submission object and breaks it down into individual comments"""
     submission.comments.replace_more(limit=None)
     return submission.comments.list()
+
+
+
+
+
 
 

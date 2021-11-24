@@ -1,9 +1,9 @@
-from SocialMediaQuerying.SubredditDefinitions import Categorizations
+from SocialMediaQuerying.SubredditDefinitions import Categorizations as cat
 
 
 class Subreddit(object):
     """Contains my properties for grouping subreddits"""
-    def __init__(self, name: str, category: Categorizations.Category, humor: Categorizations.Humor):
+    def __init__(self, name: str, category: cat.Category, humor: cat.Humor):
         self.name = name
         self.category = category
         self.humor = humor
@@ -11,8 +11,8 @@ class Subreddit(object):
 
 def generate_subreddit_dictionary() -> dict:
     subdict = {}
-    humor = Categorizations.Humor
-    category = Categorizations.Category
+    humor = cat.Humor
+    category = cat.Category
 
     subdict['PoliticalCompassMemes'] = Subreddit('PoliticalCompassMemes', category.POLITICAL, humor.FUNNY)
     subdict['Conservative'] = Subreddit('Conservative', category.POLITICAL, humor.SERIOUS)
