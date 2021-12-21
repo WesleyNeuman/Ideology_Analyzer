@@ -62,28 +62,28 @@ class Reddit(object):
 class SubmissionItem(object):
 
     def __init__(self, item):
-        if type(item) == praw.Reddit.submission:
+        if type(item) == praw.models.reddit.submission.Submission:
             self._id = 'r_' + str(item.id)
             self.subreddit = str(item.subreddit.display_name)
             self.comment_id = str(item.id)
             self.post_id = str(item.id)
             self.parent_id = 'toplevelpost'
-            self.author = str(item.author.name)
+            self.author = author_assign_check_deleted(item.author)
             self.depth = '-1'
             self.flair = str(item.author_flair_text)
-            self.text = str(item.selftext)
+            self.text = text_assign_submission_content(item)
             self.ups = str(item.ups)
             self.downs = str(item.downs)
             self.score = str(item.score)
             self.title = str(item.title)
             self.analyses = {}
-        elif type(item) == praw.Reddit.comment:
+        elif type(item) == praw.models.reddit.comment.Comment:
             self._id = 'r_' + str(item.id)
             self.subreddit = str(item.subreddit.display_name)
             self.comment_id = str(item.id)
             self.post_id = str(item.link_id)
             self.parent_id = str(item.parent_id)
-            self.author = str(item.author.name)
+            self.author = author_assign_check_deleted(item.author)
             self.depth = str(item.depth)
             self.flair = str(item.author_flair_text)
             self.text = str(item.body)
@@ -112,12 +112,35 @@ def break_down_comment_tree(submission) -> list:
     return submission.comments.list()
 
 
+def create_list_from_post(submission) -> list:
+    post_list = [SubmissionItem(submission)]
+    comments = break_down_comment_tree(submission)
+    for comment in comments:
+        post_list.append(SubmissionItem(comment))
+    return post_list
+
+
 def create_dict_from_post(submission) -> dict:
     post_dict = {submission.id: SubmissionItem(submission)}
     comments = break_down_comment_tree(submission)
     for comment in comments:
         post_dict[comment.id] = SubmissionItem(comment)
     return post_dict
+
+
+def author_assign_check_deleted(author):
+    try:
+        return str(author.name)
+    except:
+        return 'Deleted'
+
+
+def text_assign_submission_content(submission):
+    if submission.is_self == True:
+        return submission.title + '.\n\n' + submission.selftext
+    else:
+        return submission.title
+
 
 
 

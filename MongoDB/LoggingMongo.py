@@ -16,13 +16,10 @@ def log_document(mlogger: MongoLogger, documents):
     mlogger.collection.insert_many(documents)
 
 
-def build_documents_from_reddit_post(content: Post):
+def build_documents_from_reddit_post(content: dict):
     doculist = []
-    for comment in content.comment_list:
-        doculist.append(vars(comment))
-    temp = vars(content)
-    del temp['comment_list']
-    doculist.append(temp)
+    for value in content:
+        doculist.append(vars(value))
     return doculist
 
 
