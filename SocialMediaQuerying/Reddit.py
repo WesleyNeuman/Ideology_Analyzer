@@ -63,7 +63,7 @@ class SubmissionItem(object):
 
     def __init__(self, item):
         if type(item) == praw.models.reddit.submission.Submission:
-            self._id = 'r_' + str(item.id)
+            self._id = str(item.id)
             self.subreddit = str(item.subreddit.display_name)
             self.comment_id = str(item.id)
             self.post_id = str(item.id)
@@ -78,11 +78,11 @@ class SubmissionItem(object):
             self.title = str(item.title)
             self.analyses = {}
         elif type(item) == praw.models.reddit.comment.Comment:
-            self._id = 'r_' + str(item.id)
+            self._id = str(item.id)
             self.subreddit = str(item.subreddit.display_name)
             self.comment_id = str(item.id)
             self.post_id = str(item.link_id)
-            self.parent_id = str(item.parent_id)
+            self.parent_id = format_parent_id(str(item.parent_id)).strip()
             self.author = author_assign_check_deleted(item.author)
             self.depth = str(item.depth)
             self.flair = str(item.author_flair_text)
@@ -112,12 +112,12 @@ def break_down_comment_tree(submission) -> list:
     return submission.comments.list()
 
 
-def create_list_from_post(submission) -> list:
-    post_list = [SubmissionItem(submission)]
-    comments = break_down_comment_tree(submission)
-    for comment in comments:
-        post_list.append(SubmissionItem(comment))
-    return post_list
+# def create_list_from_post(submission) -> list:
+#     post_list = [SubmissionItem(submission)]
+#     comments = break_down_comment_tree(submission)
+#     for comment in comments:
+#         post_list.append(SubmissionItem(comment))
+#     return post_list
 
 
 def create_dict_from_post(submission) -> dict:
@@ -142,7 +142,8 @@ def text_assign_submission_content(submission):
         return submission.title
 
 
-
+def format_parent_id(parent_id):
+    return parent_id[3:]
 
 
 

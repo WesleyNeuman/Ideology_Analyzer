@@ -18,7 +18,7 @@ def log_document(mlogger: MongoLogger, documents):
 
 def build_documents_from_reddit_post(content: dict):
     doculist = []
-    for value in content:
+    for value in content.values():
         doculist.append(vars(value))
     return doculist
 

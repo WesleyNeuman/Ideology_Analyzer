@@ -29,9 +29,10 @@ for post in sublist:
 post = post_breakdown[0]
 
 # Testing code for calling analysis
-post = psc.reddit_post_sentiment(post)
+#post = psc.reddit_post_sentiment(post)
+post = psc.reddit_post_sentiment_difference_from_parent(post)
 for item in post.values():
-    print(item.analyses['TextSentiment'])
+    print(item.analyses['TextSentimentParentDifferences'])
 
 # Testing code for logging analyzed data
 #logger = awslog.DynamoLogger()
