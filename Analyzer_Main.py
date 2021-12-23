@@ -37,6 +37,8 @@ doculist2 = []
 for i in range(len(doculist)):
     doculist2.append(jp.decode(doculist[i]))
 
+print(vars(doculist2[0]))
+
 # Testing code for logging analyzed data
 #logger = awslog.DynamoLogger()
 

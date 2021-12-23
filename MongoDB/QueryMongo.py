@@ -9,12 +9,16 @@ class MongoGetter(object):
         self.database = self.client['ideology']
         self.collection = self.database[collection]
 
-def get_mongo(mongo: MongoGetter, keys: list, values: list) -> list:
+def get_mongo(mongodef: MongoGetter, keys: list, values: list) -> list:
     """Builds a query dictionary based on the keys and values provided"""
     try:
         dict = {}
         for i in range(len(keys)):
             dict[keys[i]] = str(values[i])
-        return mongo.collection.find(dict)
+        return mongodef.collection.find(filter=dict)
     except Exception as inst:
         logging.error(inst)
+
+
+def get_reddit_post_documents():
+    pass

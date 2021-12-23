@@ -13,14 +13,22 @@ class MongoLogger(object):
         self.collection = self.database[collection]
 
 
-def log_document(mlogger: MongoLogger, documents):
-    mlogger.collection.insert_many(documents)
+def mongo_log_helper(mlogger: MongoLogger, documents: dict):
+    # Check existence of ids
+    mlogger.collection.find(filter={"_id" : {dict.keys}}, projection={"_id" : 1})
+
+    # Separate document list into existing ids and new ids
+
+    # Replace existing ids
+
+    # Insert new ids
+    pass
 
 
-def build_documents_from_reddit_post(content: dict):
+def log_documents_from_reddit_post(mlogger: MongoLogger, content: dict):
     doculist = []
     for value in content.values():
         doculist.append(jp.encode(value))
-    return doculist
+    mlogger.collection.insert_many(doculist)
 
 
