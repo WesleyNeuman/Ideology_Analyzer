@@ -1,4 +1,5 @@
 import pymongo as mongo
+import jsonpickle as jp
 
 import api_secrets as sec
 from SocialMediaQuerying.Reddit import *
@@ -19,7 +20,7 @@ def log_document(mlogger: MongoLogger, documents):
 def build_documents_from_reddit_post(content: dict):
     doculist = []
     for value in content.values():
-        doculist.append(vars(value))
+        doculist.append(jp.encode(value))
     return doculist
 
 

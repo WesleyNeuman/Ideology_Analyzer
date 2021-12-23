@@ -2,6 +2,7 @@
 import pandas as pd
 import WesleysPythonToolkit.PandasWrappers as pw
 import nltk
+import jsonpickle as jp
 
 import logging, os
 
@@ -31,8 +32,10 @@ post = post_breakdown[0]
 # Testing code for calling analysis
 #post = psc.reddit_post_sentiment(post)
 post = psc.reddit_post_sentiment_difference_from_parent(post)
-for item in post.values():
-    print(item.analyses['TextSentimentParentDifferences'])
+doculist = logmongo.build_documents_from_reddit_post(post)
+doculist2 = []
+for i in range(len(doculist)):
+    doculist2.append(jp.decode(doculist[i]))
 
 # Testing code for logging analyzed data
 #logger = awslog.DynamoLogger()
