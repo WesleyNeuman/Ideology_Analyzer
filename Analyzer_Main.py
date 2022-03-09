@@ -1,6 +1,5 @@
 # Import External Modules
 import pandas as pd
-import WesleysPythonToolkit.PandasWrappers as pw
 import nltk
 import jsonpickle as jp
 
@@ -11,13 +10,13 @@ import Analysis.PostSentimentChain as psc
 import Analysis.WordPreprocessing as wp
 import Analysis.WesleyHeuristics as wh
 from SocialMediaQuerying.Reddit import *
-import AWS.LoggingAWS as logaws
 import MongoDB.LoggingMongo as logmongo
 
 # Setup
 if os.path.exists('MasterTestingDebug.log'):
     os.remove('MasterTestingDebug.log')
 logging.basicConfig(filename='MasterTestingDebug.log', level=logging.INFO)
+mlogger = logmongo.MongoLogger
 
 # Testing code for getting a post from reddit
 reddit = Reddit()
@@ -30,9 +29,8 @@ for post in sublist:
 post = post_breakdown[0]
 
 # Testing code for calling analysis
-#post = psc.reddit_post_sentiment(post)
 post = psc.reddit_post_sentiment_difference_from_parent(post)
-doculist = logmongo.build_documents_from_reddit_post(post)
+doculist = logmongo.log_documents_from_reddit_post(post)
 doculist2 = []
 for i in range(len(doculist)):
     doculist2.append(jp.decode(doculist[i]))
